@@ -4,6 +4,7 @@ const fs =        require('fs');
 
 // CREATE ONE SAUCE
 exports.createOneSauce = (req, res, next) => {
+  console.log(JSON.parse(req.body.sauce));
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
   const sauce = new Sauce ({
@@ -11,11 +12,8 @@ exports.createOneSauce = (req, res, next) => {
     imageUrl: `${ req.protocol }://${ req.get('host') }/images/${ req.file.filename }`
   });
   sauce.save()
-  .then( () => {
-});
-thing.save()
-  .then(() => res.status(201).json({ message: 'Sauce crée !'}))
-  .catch(error => res.status(400).json({ error }));
+    .then(() => res.status(201).json({ message: 'Sauce crée !'}))
+    .catch(error => res.status(400).json({ error }));
 };
   
 // MODIFY ONE SAUCE 
@@ -32,9 +30,9 @@ exports.modifyOneSauce = (req, res, next) => {
   
   // DELETE ONE SAUCE
 exports.deleteOneSauce = (req, res, next) => {
-    Thing.findSauce({ _id: req.params.id })
+    Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
-      const filename = thing.imageUrl.split('/images/')[1];
+      const filename = sauce.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
         Sauce.deleteOne({ _id: req.params.id })
           .then(() => res.status(200).json({ message: 'Sauce supprimé !'}))
@@ -48,15 +46,16 @@ exports.deleteOneSauce = (req, res, next) => {
 // ACCESS TO ONE SAUCE
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
-        .then(thing => res.status(200).json(thing))
+        .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(404).json({ error }));
 };
 
 // ACCESS TO ALL SAUCES
 exports.getAllSauces = (req, res, next) => {
+  console.log(Sauce.find());
   Sauce.find()
-  .then(sauces => res.status(200).json(sauces))
-  .catch(error => res.status(400).json({ error }));
+    .then(sauces => res.status(200).json(sauces))
+    .catch(error => res.status(400).json({ error }));
 };
 
 // RATE ONE SAUCE
