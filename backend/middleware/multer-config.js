@@ -1,11 +1,12 @@
 const multer = require('multer');
 
+// LIST IMAGES TYPES
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
     'image/png': 'png'
 }
-
+// LOCATION STORAGE & NAME 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'images')

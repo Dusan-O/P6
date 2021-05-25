@@ -7,6 +7,7 @@ const userSchema = mongoose.Schema({
     password: { type: String, required: true}
 });
 
+// PLUGIN CREATE USER WITH MAIL ADRESS
 userSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('User', userSchema);

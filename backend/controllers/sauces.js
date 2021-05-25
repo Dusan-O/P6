@@ -1,13 +1,14 @@
 const Sauce =     require('../models/Sauce');
+// ACCESS TO THE FILE SYSTEM
 const fs =        require('fs');                
 
 // CREATE ONE SAUCE
 exports.createOneSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
-  delete thingObject._id;
-  const sauce = new Sauce({
+  delete sauceObject._id;
+  const sauce = new Sauce ({
     ...sauceObject,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    imageUrl: `${ req.protocol }://${ req.get('host') }/images/${ req.file.filename }`
   });
   sauce.save()
   .then( () => {
@@ -30,13 +31,13 @@ exports.modifyOneSauce = (req, res, next) => {
     };
   
   // DELETE ONE SAUCE
-exports.deleteThing = (req, res, next) => {
+exports.deleteOneSauce = (req, res, next) => {
     Thing.findSauce({ _id: req.params.id })
     .then(sauce => {
       const filename = thing.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
         Sauce.deleteOne({ _id: req.params.id })
-          .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+          .then(() => res.status(200).json({ message: 'Sauce supprimé !'}))
           .catch(error => res.status(400).json({ error }));
       });
     })
@@ -59,8 +60,10 @@ exports.getAllSauces = (req, res, next) => {
 };
 
 // RATE ONE SAUCE
+// 3 POSSIBLE ISSUES, LIKE, DISLIKE, OR NULL
 exports.rateOneSauce = (req, res, next) => {
   switch (req.body.like) {
+    // REQ.BODY.LIKE = 0
     case 0:                                                   
       Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
@@ -84,7 +87,7 @@ exports.rateOneSauce = (req, res, next) => {
         })
         .catch((error) => { res.status(404).json({error}); });
       break;
-    
+    // REQ.BODY.LIKE = 1
     case 1:                                                 
       Sauce.updateOne({ _id: req.params.id }, {            
         $inc: { likes: 1 },                                 
@@ -93,7 +96,7 @@ exports.rateOneSauce = (req, res, next) => {
         .then(() => { res.status(201).json({ message: "Like enregistré !" }); }) 
         .catch((error) => { res.status(400).json({ error }); }); 
       break;
-    
+    // REQ.BODY.LIKE = -1
     case -1:                                                  
       Sauce.updateOne({ _id: req.params.id }, {               
         $inc: { dislikes: 1 },                               
