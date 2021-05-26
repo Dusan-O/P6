@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');    // HASH THE PASSWORD
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
@@ -23,13 +23,13 @@ function maskator(sentence) {
 }
 // SING IN
 exports.signup = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10)
+  bcrypt.hash(req.body.password, 10)    // THE PASSWORD IS HASHED SALT 10
     .then(hash => {
       const user = new User({
         email: req.body.email,
         password: hash
       });
-      user.save()
+      user.save()       // SAVE IN THE DATABASE
         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
         .catch(error => res.status(400).json({ error }));
     })

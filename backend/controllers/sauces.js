@@ -53,7 +53,7 @@ exports.getOneSauce = (req, res, next) => {
 // ACCESS TO ALL SAUCES
 exports.getAllSauces = (req, res, next) => {
   console.log(Sauce.find());
-  Sauce.find()
+  Sauce.findOne()
     .then(sauces => res.status(200).json(sauces))
     .catch(error => res.status(400).json({ error }));
 };
@@ -66,7 +66,7 @@ exports.rateOneSauce = (req, res, next) => {
     case 0:                                                   
       Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
-          if (sauce.usersLiked.find( user => user === req.body.userId)) {  
+          if (sauce.usersLiked.find( user => user === req.body.userId)) {   //
             Sauce.updateOne({ _id: req.params.id }, {         
               $inc: { likes: -1 },                            
               $pull: { usersLiked: req.body.userId }         
