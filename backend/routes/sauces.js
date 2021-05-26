@@ -5,7 +5,10 @@ const saucesCtrl = require('../controllers/sauces');
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
 
-// CRUD
+
+// routes CRUD: Create, Read, Update, Delete
+// routes: auth pour l'autentification
+// routes: multer pour gérer les fichiers images
 router.post('/', auth, multer, saucesCtrl.createOneSauce);
 router.put('/:id', auth, multer, saucesCtrl.modifyOneSauce);
 router.delete('/:id', auth, saucesCtrl.deleteOneSauce);
