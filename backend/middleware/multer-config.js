@@ -1,13 +1,12 @@
-// import package multer to manage images
 const multer = require('multer');
 
-// Liste des formats d'images
+// LIST IMAGES TYPES
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
     'image/png': 'png'
 }
-// Lieu d'enregistrement et nom du fichier
+// LOCATION STORAGE & NAME
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'images')
